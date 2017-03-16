@@ -347,7 +347,7 @@ class TradeClient:
         :param wallet_name: string. REQUIRED. Wallet to deposit in (accepted: “trading”, “exchange”, “deposit”). Your wallet needs to already exist
         :param renew: int32. Default is 0. If set to 1, will return a new unused deposit address
         """
-         payload = {
+        payload = {
             "request": "/v1/deposit/new",
             "nonce": self._nonce,
             "method": str(method),
