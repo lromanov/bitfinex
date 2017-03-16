@@ -338,6 +338,27 @@ class TradeClient:
         json_resp = r.json()
 
         return json_resp
+        
+    def deposit(self, method, wallet_name, renew=0):
+        """
+        Return your deposit address to make a new deposit.
+        
+        :param method: string. REQUIRED. Method of deposit (methods accepted: “bitcoin”, “litecoin”, “ethereum”, “mastercoin” (tethers), "ethereumc", "zcash", "monero").
+        :param wallet_name: string. REQUIRED. Wallet to deposit in (accepted: “trading”, “exchange”, “deposit”). Your wallet needs to already exist
+        :param renew: int32. Default is 0. If set to 1, will return a new unused deposit address
+        """
+         payload = {
+            "request": "/v1/deposit/new",
+            "nonce": self._nonce,
+            "method": str(method),
+            "wallet_name": str(wallet_name),
+            "renew": int(renew)
+        }
+        signed_payload = self._sign_payload(payload)
+        r = requests.post(self.URL + "/deposit/new", headers=signed_payload, verify=True)
+        json_resp = r.json()
+
+        return json_resp
 
 
 
