@@ -31,7 +31,6 @@ class TradeClient:
         self.URL = "{0:s}://{1:s}/{2:s}".format(PROTOCOL, HOST, VERSION)
         self.KEY = key
         self.SECRET = secret
-        pass
 
     @property
     def _nonce(self):
@@ -83,7 +82,7 @@ class TradeClient:
 
         try:
             json_resp['order_id']
-        except:
+        except KeyError:
             return json_resp['message']
 
         return json_resp
@@ -105,8 +104,8 @@ class TradeClient:
         json_resp = r.json()
 
         try:
-            json_resp['avg_excution_price']
-        except:
+            json_resp['avg_execution_price']
+        except KeyError:
             return json_resp['message']
 
         return json_resp
@@ -144,8 +143,8 @@ class TradeClient:
         json_resp = r.json()
 
         try:
-            json_resp['avg_excution_price']
-        except:
+            json_resp['avg_execution_price']
+        except KeyError:
             return json_resp['message']
 
         return json_resp
@@ -179,6 +178,7 @@ class TradeClient:
         signed_payload = self._sign_payload(payload)
         r = requests.post(self.URL + "/positions", headers=signed_payload, verify=True)
         json_resp = r.json()
+
         return json_resp
 
     def claim_position(self, position_id):
@@ -338,11 +338,11 @@ class TradeClient:
         json_resp = r.json()
 
         return json_resp
-        
+
     def deposit(self, method, wallet_name, renew=0):
         """
         Return your deposit address to make a new deposit.
-        
+
         :param method: string. REQUIRED. Method of deposit (methods accepted: “bitcoin”, “litecoin”, “ethereum”, “mastercoin” (tethers), "ethereumc", "zcash", "monero").
         :param wallet_name: string. REQUIRED. Wallet to deposit in (accepted: “trading”, “exchange”, “deposit”). Your wallet needs to already exist
         :param renew: int32. Default is 0. If set to 1, will return a new unused deposit address
